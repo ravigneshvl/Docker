@@ -1,0 +1,17 @@
+#!/bin/bash
+
+sudo apt update
+sudo apt install git -y
+pwd
+sudo rm -rf *
+git clone https://github.com/ravigneshvl/demo.git
+ls
+sudo cp -R demo/*  .
+ls
+sudo chmod -R 777 *
+sudo docker build . -t   account_ID.dkr.ecr.us-east-1.amazonaws.com/new
+sudo aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin account_ID.dkr.ecr.us-east-1.amazonaws.com
+sudo docker push account_ID.dkr.ecr.us-east-1.amazonaws.com/new
+sudo docker stop $(sudo docker ps)
+sudo docker rm $(sudo docker ps -a)
+sudo docker run -d -p 80:80 account_ID.dkr.ecr.us-east-1.amazonaws.com/new
